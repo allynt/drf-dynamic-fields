@@ -68,6 +68,11 @@ class DynamicFieldsMixin(object):
         # omit fields in the `omit` argument.
         omitted = set(filter(None, omit_fields))
 
+        # in case this is a GeoFeatureModelSerializer, maintain the geo_field
+        meta = getattr(self, "Meta")
+        if hasattr(meta, "geo_field"):
+            allowed.add(meta.geo_field)
+
         for field in existing:
 
             if field not in allowed:
